@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);  // 初始化界面
 
         // 初始化字符串列表
-    stringsToRotate << "提示：每局游戏有三次回答趣味问题复活的机会，成功复活会消除面板中所有的‘2’" << "提示：你如果对移动不满意，可以选择撤销，但每次撤销扣10分，且不能连续撤销两步" << "提示：你也可以用键盘中的方向键来操控移动方向，空格键可以撤销操作";
+    stringsToRotate << "提示：每局游戏有三次回答趣味问题复活的机会，成功复活会消除面板中所有的‘2’" << "提示：你如果对移动不满意，可以选择撤销，但每次撤销扣10分，且不能连续撤销两步" << "提示：你也可以用键盘中的方向键来操控移动方向，空格键可以撤销操作"<<"提示：每次移动会有一个空格被数字2或4填充，填充位置用黄色背景标出";
 
         // 设置定时器
     rotationTimer = new QTimer(this);
@@ -107,7 +107,15 @@ void MainWindow::updateUI() {
     }
     a[0]->setText("得分："+QString::number(game.point));
     a[1]->setText("步数："+QString::number(game.step));
+    tiles[game.addx*4+game.addy]->setStyleSheet("QLabel {"
+                                                    "  background-color: yellow;" // 设置背景色为黄色
+                                                    "  border: 1px solid black;"   // 设置边框为2像素宽的蓝色实线
+                                                    "}");
 
+    if(game.addx!=game.addpx||game.addy!=game.addpy) tiles[game.addpx*4+game.addpy]->setStyleSheet("QLabel {"
+                                                          "  background-color: rgba(255, 255, 255, 0);"
+                                                          "  border: 1px solid black;"   // 设置边框为2像素宽的蓝色实线
+                                                          "}");
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event){
@@ -217,14 +225,23 @@ void MainWindow::on_revise_clicked()
 }
 
 void MainWindow::End(int n){
+    QMessageBox LoseBox;
+    LoseBox.setWindowTitle("游戏结束");
+    LoseBox.setText("失败啦!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step)+"\n您的历史最高分"+QString::number(maxPoint)+"\n对应步数："+QString::number(maxStep));
+    LoseBox.setIcon(QMessageBox::Question);
+
+
+    // 添加自定义按钮
+    QAbstractButton *button5 = LoseBox.addButton("结束游戏", QMessageBox::ActionRole);
+    QAbstractButton *button6 = LoseBox.addButton("重新开始", QMessageBox::ActionRole);
     if(n==0){
         if(game.choice>0){
         QMessageBox msgBox;
         msgBox.setWindowTitle("抉择");
-        msgBox.setText("您看来陷入了困境，现在有"+QString::number(game.choice)+"次回答问题复活的机会，您是否接受？\n(选否则结束游戏）");
+        msgBox.setText("您看来陷入了困境，现在还有"+QString::number(game.choice)+"次回答问题复活的机会，您是否接受？\n(选否则结束游戏）");
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
-        if (msgBox.exec() == QMessageBox::Yes) {
+    if (msgBox.exec() == QMessageBox::Yes) {
             // 用户选择了“Yes”
     question(game.choice);
     QMessageBox msgBox;
@@ -245,23 +262,38 @@ void MainWindow::End(int n){
     if (msgBox.clickedButton() == button1) {
         game.Recover();
         QMessageBox::information(this, "恭喜", "回答正确，复活成功！你还有"+QString::number(game.choice)+"次复活机会");
-    } else if (msgBox.clickedButton() == button2) {
-        QMessageBox::information(this, "游戏结束", "回答错误，游戏结束!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step));
-    } else if (msgBox.clickedButton() == button3) {
-        QMessageBox::information(this, "游戏结束", "回答错误，游戏结束!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step));
-    } else if (msgBox.clickedButton() == button4) {
-        QMessageBox::information(this, "游戏结束", "回答错误，游戏结束!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step));
+    } else if (msgBox.clickedButton() == button2&&game.choice>0) {
+        game.choice--;
+        QMessageBox::information(this, "提示", "回答错误，你还有"+QString::number(game.choice)+"次复活机会");
+        End(0);
+    } else if (msgBox.clickedButton() == button3&&game.choice>0) {
+        game.choice--;
+        QMessageBox::information(this, "提示", "回答错误，你还有"+QString::number(game.choice)+"次复活机会");
+        End(0);
+    } else if (msgBox.clickedButton() == button4&&game.choice>0) {
+        game.choice--;
+        QMessageBox::information(this, "提示", "回答错误，你还有"+QString::number(game.choice)+"次复活机会");
+        End(0);
+    }
+    else{LoseBox.setText("回答错误，游戏结束!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step)+"\n您的历史最高分"+QString::number(maxPoint)+"\n对应步数："+QString::number(maxStep));
+        LoseBox.exec();
+        if(LoseBox.clickedButton() == button5) Restart(1);
+        if(LoseBox.clickedButton() == button6) Restart(0);
     }
         }
-        else {
-    QMessageBox::information(this, "游戏结束", "失败啦!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step));
+    else {
+            LoseBox.exec();
+    if(LoseBox.clickedButton() == button5) Restart(1);
+    if(LoseBox.clickedButton() == button6) Restart(0);
         }
         }
-        else {
-            QMessageBox::information(this, "游戏结束", "失败啦!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step));
+    else {
+            LoseBox.exec();
+        if(LoseBox.clickedButton() == button5) Restart(1);
+        if(LoseBox.clickedButton() == button6) Restart(0);
         }
     }
-    if(n==1)QMessageBox::information(this, "游戏结束", "恭喜您，成功啦!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step));
+    if(n==1)QMessageBox::information(this, "游戏结束", "恭喜您，成功啦!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step)+"\n您的历史最高分"+QString::number(maxPoint)+"\n对应步数："+QString::number(maxStep));
 }
 
 void MainWindow::updateLabelText(){
@@ -295,4 +327,19 @@ void MainWindow::question(int n){
         a4="中华文明";
     }
     return;
+}
+
+void MainWindow::Restart(int n){
+    if(game.point>maxPoint){
+        maxPoint=game.point;
+        maxStep=game.step;
+    }
+    if(n==0) {
+        tiles[game.addx*4+game.addy]->setStyleSheet("QLabel {"
+                                                          "  background-color: rgba(255, 255, 255, 0);"
+                                                          "  border: 1px solid black;"   // 设置边框为2像素宽的蓝色实线
+                                                          "}");
+        game.initialize();
+    }
+    if(n==1) QCoreApplication::quit();
 }

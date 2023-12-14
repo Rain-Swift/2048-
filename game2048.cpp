@@ -12,10 +12,21 @@ void Game2048::initialize() {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             board[i][j] = 0;
+            PreBoard[i][j]=0;
         }
     }
+    addx=0;
+    addy=0;
+    addpx=0;
+    addpy=0;
     addRandomTile();
     addRandomTile();
+    point=0;
+    step=0;
+    choice=3;
+    Revisible=0;
+    prepoint=0;
+
 }
 
 bool Game2048::CheckFull(){
@@ -97,7 +108,10 @@ void Game2048::addRandomTile() {
         x = ranNum1();
         y = ranNum1();
     } while (board[x][y] != 0);
-
+    addpx=addx;
+    addpy=addy;
+    addx=x;
+    addy=y;
     board[x][y] = ranNum();
 }
 

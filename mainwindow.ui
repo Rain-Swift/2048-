@@ -136,10 +136,10 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>40</x>
       <y>40</y>
-      <width>162</width>
-      <height>162</height>
+      <width>161</width>
+      <height>161</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -637,6 +637,22 @@
       </widget>
      </item>
     </layout>
+    <zorder>l16</zorder>
+    <zorder>l15</zorder>
+    <zorder>l14</zorder>
+    <zorder>l13</zorder>
+    <zorder>l12</zorder>
+    <zorder>l11</zorder>
+    <zorder>l10</zorder>
+    <zorder>l9</zorder>
+    <zorder>l8</zorder>
+    <zorder>l7</zorder>
+    <zorder>l6</zorder>
+    <zorder>l5</zorder>
+    <zorder>l4</zorder>
+    <zorder>l3</zorder>
+    <zorder>l2</zorder>
+    <zorder>l1</zorder>
    </widget>
    <widget class="QPushButton" name="revise">
     <property name="geometry">
@@ -659,10 +675,10 @@
    <widget class="QLabel" name="backgroundLabel">
     <property name="geometry">
      <rect>
-      <x>-120</x>
-      <y>-104</y>
+      <x>-108</x>
+      <y>-98</y>
       <width>451</width>
-      <height>451</height>
+      <height>441</height>
      </rect>
     </property>
     <property name="text">

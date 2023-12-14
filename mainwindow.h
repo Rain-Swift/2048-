@@ -44,7 +44,8 @@ private:
     QStringList stringsToRotate;
     int currentStringIndex;
     QString q,a1,a2,a3,a4;
-
+    void Restart(int n);
+    int maxPoint=0,maxStep=0;
 
 };
 #endif

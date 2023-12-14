@@ -19,6 +19,7 @@ public:
     bool Win();
     void Recover();
     int choice=3;
+    int addx,addy,addpx,addpy;
 
 private:
     int board[4][4];
@@ -31,6 +32,7 @@ private:
     bool CheckFull();
     bool Revisible=0;
     int prepoint=0;
+
 };
 
 #endif // GAME2048_H

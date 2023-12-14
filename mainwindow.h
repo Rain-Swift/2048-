@@ -27,7 +27,7 @@ private slots:
 
     void on_revise_clicked();
 
-    void End();
+    void End(int n);
 
 
 private:

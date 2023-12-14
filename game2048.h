@@ -16,6 +16,9 @@ public:
     int point=0;
     int step=0;
     bool Revise();
+    bool Win();
+    void Recover();
+    int choice=1;
 
 private:
     int board[4][4];

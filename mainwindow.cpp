@@ -116,6 +116,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
     case Qt::Key_Right:
         on_right_clicked();
         break;
+    case Qt::Key_Space:
+        if(!game.Revise()) QMessageBox::information(this, "警告", "只能撤销一步，你已经撤销过了");
+        updateUI();
+        break;
     default:
         QMainWindow::keyPressEvent(event);  // 确保其他按键正常处理
     }
@@ -205,10 +209,10 @@ void MainWindow::on_revise_clicked()
 
 void MainWindow::End(int n){
     if(n==0){
-        if(game.choice==1){
+        if(game.choice>0){
         QMessageBox msgBox;
         msgBox.setWindowTitle("抉择");
-        msgBox.setText("您看来陷入了困境，现在有一次回答问题复活的机会，您是否接受？\n(选否则结束游戏）");
+        msgBox.setText("您看来陷入了困境，现在有"+QString::number(game.choice)+"次回答问题复活的机会，您是否接受？\n(选否则结束游戏）");
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         if (msgBox.exec() == QMessageBox::Yes) {
@@ -229,8 +233,8 @@ void MainWindow::End(int n){
 
     // 检查用户点击了哪个按钮
     if (msgBox.clickedButton() == button1) {
-        QMessageBox::information(this, "恭喜", "回答正确，复活成功！");
         game.Recover();
+        QMessageBox::information(this, "恭喜", "回答正确，复活成功！你还有"+QString::number(game.choice)+"次复活机会");
     } else if (msgBox.clickedButton() == button2) {
         QMessageBox::information(this, "游戏结束", "回答错误，游戏结束!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step));
     } else if (msgBox.clickedButton() == button3) {

@@ -121,26 +121,26 @@ bool Game2048::moveLeft() {
             if (board[i][j] != 0 && board[i][j - 1] == 0) {
                 board[i][j - 1] = board[i][j];
                 board[i][j] = 0;
-                j=3;
+                j=4;
             }
         }
-    }
+    }//填充空格
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j <3; j++) {
             if (board[i][j] == board[i][j + 1]&&board[i][j+1]!=0) {
                 board[i][j] *= 2;
                 point+=board[i][j];
                 board[i][j+1] = 0;
-                j--;
+                j++;
             }
         }
-    }
+    }//合并数字
     for (int i = 0; i < 4; i++) {
         for (int j = 3; j >0; j--) {
             if (board[i][j] != 0 && board[i][j - 1] == 0) {
                 board[i][j - 1] = board[i][j];
                 board[i][j] = 0;
-                j=3;
+                j=4;
             }
         }
     }
@@ -163,7 +163,7 @@ bool Game2048::moveRight() {
             if (board[i][j] != 0 && board[i][j + 1] == 0) {
                 board[i][j+1] = board[i][j];
                 board[i][j]= 0;
-                j=0;
+                j=-1;
             }
         }
     }
@@ -183,7 +183,7 @@ bool Game2048::moveRight() {
                     if (board[i][j] != 0 && board[i][j + 1] == 0) {
                         board[i][j+1] = board[i][j];
                         board[i][j]= 0;
-                        j=0;
+                        j=-1;
                     }
                 }
         }
@@ -200,17 +200,18 @@ bool Game2048::moveUp() {
                 }
                 if(status==0) return false;
         }
-    for (int i = 3; i>0; i--) {
-                for (int j = 0; j < 4; j++) {
-                    if (board[i][j] != 0 && board[i - 1][j] == 0) {
-                        board[i-1][j] = board[i][j];
-                        board[i][j] = 0;
-                        i=3;
-                    }
-                }
+    for (int j = 0; j<4; j++) {
+        for (int i = 3; i >0; i--) {
+            if (board[i-1][j] ==0 &&board[i][j]!=0) {
+                board[i-1][j] = board[i][j];
+                board[i][j]=0;
+                i=4;
+            }
+
+        }
     }
-    for (int i = 0; i<3; i++) {
-        for (int j = 0; j < 4; j++) {
+    for (int j = 0; j<4; j++) {
+        for (int i = 0; i < 3; i++) {
             if (board[i][j] == board[i+1][j]&&board[i][j]!=0) {
                 board[i][j] *= 2;
                 point+=board[i][j];
@@ -220,13 +221,14 @@ bool Game2048::moveUp() {
 
         }
     }
-    for (int i = 3; i>0; i--) {
-        for (int j = 0; j < 4; j++) {
-            if (board[i][j] != 0 && board[i - 1][j] == 0) {
+    for (int j = 0; j<4; j++) {
+        for (int i = 3; i >0; i--) {
+            if (board[i-1][j] ==0 &&board[i][j]!=0) {
                 board[i-1][j] = board[i][j];
-                board[i][j] = 0;
-                i=3;
+                board[i][j]=0;
+                i=4;
             }
+
         }
     }
     return true;
@@ -242,33 +244,35 @@ bool Game2048::moveDown() {
         }
         if(status==0) return false;
     }
-    for (int i = 0; i <3; i++) {
-        for (int j = 0; j <4; j++) {
-            if (board[i][j] != 0 && board[i + 1][j] == 0) {
+    for (int j = 0; j<4; j++) {
+        for (int i = 0; i <3; i++) {
+            if (board[i+1][j] ==0 &&board[i][j]!=0) {
                 board[i+1][j] = board[i][j];
-                board[i][j] = 0;
-                i=0;
-            }
-        }
-    }
-    for (int i = 3; i >0; i--) {
-        for (int j = 0; j <4; j++) {
-            if (board[i][j] == board[i-1][j]&&board[i-1][j]!=0) {
-                board[i][j] *= 2;
-                point+=board[i][j];
-                board[i-1][j] = 0;
-                i++;
+                board[i][j]=0;
+                i=-1;
             }
 
         }
     }
-    for (int i = 0; i <3; i++) {
-        for (int j = 0; j <4; j++) {
-            if (board[i][j] != 0 && board[i + 1][j] == 0) {
-                board[i+1][j] = board[i][j];
-                board[i][j] = 0;
-                i=0;
+    for (int j = 3;j >=0; j--) {
+        for (int i = 3; i >0; i--) {
+            if (board[i][j] == board[i-1][j]&&board[i-1][j]!=0) {
+                board[i][j] *= 2;
+                point+=board[i][j];
+                board[i-1][j] = 0;
+                i--;
             }
+
+        }
+    }
+    for (int j = 0; j<4; j++) {
+        for (int i = 0; i <3; i++) {
+            if (board[i+1][j] ==0 &&board[i][j]!=0) {
+                board[i+1][j] = board[i][j];
+                board[i][j]=0;
+                i=-1;
+            }
+
         }
     }
     return true;
@@ -308,4 +312,5 @@ void Game2048::Recover(){
         }
       }
     }
+    choice--;
 }

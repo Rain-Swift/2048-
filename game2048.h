@@ -18,7 +18,7 @@ public:
     bool Revise();
     bool Win();
     void Recover();
-    int choice=1;
+    int choice=3;
 
 private:
     int board[4][4];

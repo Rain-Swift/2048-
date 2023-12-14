@@ -29,7 +29,7 @@
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>250</y>
+      <y>230</y>
       <width>80</width>
       <height>24</height>
      </rect>
@@ -47,7 +47,7 @@
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>290</y>
+      <y>270</y>
       <width>80</width>
       <height>24</height>
      </rect>
@@ -65,7 +65,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>270</y>
+      <y>250</y>
       <width>81</width>
       <height>24</height>
      </rect>
@@ -83,7 +83,7 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>270</y>
+      <y>250</y>
       <width>80</width>
       <height>24</height>
      </rect>
@@ -159,6 +159,11 @@
          <width>40</width>
          <height>40</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">border: 1px solid black;
@@ -248,6 +253,11 @@
          <height>40</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">border: 1px solid black;
 </string>
@@ -336,6 +346,11 @@
          <height>40</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">border: 1px solid black;
 </string>
@@ -362,6 +377,11 @@
          <height>40</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">border: 1px solid black;
 </string>
@@ -387,6 +407,11 @@
          <width>40</width>
          <height>40</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">border: 1px solid black;
@@ -470,6 +495,11 @@
          <height>40</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">border: 1px solid black;
 </string>
@@ -526,6 +556,11 @@
          <width>40</width>
          <height>40</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>22</pointsize>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">border: 1px solid black;
@@ -607,7 +642,7 @@
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>270</y>
+      <y>250</y>
       <width>80</width>
       <height>24</height>
      </rect>
@@ -625,13 +660,39 @@
     <property name="geometry">
      <rect>
       <x>-120</x>
-      <y>-100</y>
+      <y>-104</y>
       <width>451</width>
       <height>451</height>
      </rect>
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="tips">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>300</y>
+      <width>331</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>DengXian</family>
+      <pointsize>10</pointsize>
+      <strikeout>false</strikeout>
+     </font>
+    </property>
+    <property name="text">
+     <string>游戏提示</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
     </property>
    </widget>
    <zorder>backgroundLabel</zorder>
@@ -643,6 +704,7 @@
    <zorder>step</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>revise</zorder>
+   <zorder>tips</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

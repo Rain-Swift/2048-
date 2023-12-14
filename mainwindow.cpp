@@ -4,8 +4,17 @@
 #include <QString>
 #include "game2048.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), currentStringIndex(0){
     ui->setupUi(this);  // 初始化界面
+
+        // 初始化字符串列表
+    stringsToRotate << "提示：每局游戏有三次回答趣味问题复活的机会，成功复活会消除面板中所有的‘2’" << "提示：你如果对移动不满意，可以选择撤销，但每次撤销扣10分，且不能连续撤销两步" << "提示：你也可以用键盘中的方向键来操控移动方向，空格键可以撤销操作";
+
+        // 设置定时器
+    rotationTimer = new QTimer(this);
+    connect(rotationTimer, &QTimer::timeout, this, &MainWindow::updateLabelText);
+    rotationTimer->start(4000); // 设置定时器每秒更新一次
+
     statusBar()->hide();
     QPixmap background(":/new/prefix1/1.png");
     ui->backgroundLabel->setPixmap(background.scaled(ui->backgroundLabel->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
@@ -88,10 +97,10 @@ void MainWindow::updateUI() {
             tiles[i]->setText("<font color='darkviolet' size='1'>" + QString::number(value) + "</font>");
             break;
         case 1024:
-            tiles[i]->setText("<font color='purple' size='0.5'>" + QString::number(value) + "</font>");
+            tiles[i]->setText("<font color='purple' size='0.2'>" + QString::number(value) + "</font>");
             break;
         case 2048:
-            tiles[i]->setText("<font color='plum' size='0.5'>" + QString::number(value) + "</font>");
+            tiles[i]->setText("<font color='plum' size='0.2'>" + QString::number(value) + "</font>");
             break;
         }
 
@@ -217,16 +226,17 @@ void MainWindow::End(int n){
         msgBox.setDefaultButton(QMessageBox::No);
         if (msgBox.exec() == QMessageBox::Yes) {
             // 用户选择了“Yes”
+    question(game.choice);
     QMessageBox msgBox;
     msgBox.setWindowTitle("问题");
-    msgBox.setText("世界上最高的建筑物（截至2023年）是什么？");
+    msgBox.setText(q);
     msgBox.setIcon(QMessageBox::Question);
 
     // 添加自定义按钮
-    QAbstractButton *button1 = msgBox.addButton("迪拜的哈利法塔", QMessageBox::ActionRole);
-    QAbstractButton *button2 = msgBox.addButton("上海的上海中心大厦2", QMessageBox::ActionRole);
-    QAbstractButton *button3 = msgBox.addButton("麦加的皇家时钟塔", QMessageBox::ActionRole);
-    QAbstractButton *button4 = msgBox.addButton("纽约的一世界贸易中心", QMessageBox::ActionRole);
+    QAbstractButton *button1 = msgBox.addButton(a1, QMessageBox::ActionRole);
+    QAbstractButton *button2 = msgBox.addButton(a2, QMessageBox::ActionRole);
+    QAbstractButton *button3 = msgBox.addButton(a3, QMessageBox::ActionRole);
+    QAbstractButton *button4 = msgBox.addButton(a4, QMessageBox::ActionRole);
 
     // 显示对话框
     msgBox.exec();
@@ -254,4 +264,35 @@ void MainWindow::End(int n){
     if(n==1)QMessageBox::information(this, "游戏结束", "恭喜您，成功啦!\n您的得分是:"+QString::number(game.point)+"\n您的步数是:"+QString::number(game.step));
 }
 
+void MainWindow::updateLabelText(){
+    // 更新 QLabel 的文本
+    ui->tips->setText(stringsToRotate.at(currentStringIndex));
 
+    // 更新索引以获取下一个字符串
+    currentStringIndex = (currentStringIndex + 1) % stringsToRotate.size();
+}
+
+void MainWindow::question(int n){
+    if(n==3){
+        q="世界上最高的建筑物（截至2023年）是什么？";
+        a1="迪拜的哈利法塔";
+        a2="上海的上海中心大厦";
+        a3="麦加的皇家时钟塔";
+        a4="纽约的一世界贸易中心";
+    }
+    if(n==2){
+        q="世界上最大的热带雨林是什么？";
+        a1="亚马逊雨林";
+        a2="刚果盆地雨林";
+        a3="东南亚雨林";
+        a4="马达加斯加雨林";
+    }
+    if(n==1){
+        q="世界上最古老的文明是什么？";
+        a1="美索不达米亚文明";
+        a2="埃及文明";
+        a3="玛雅文明";
+        a4="中华文明";
+    }
+    return;
+}

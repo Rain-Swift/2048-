@@ -40,19 +40,15 @@ bool Game2048::manipulate(int direction) {
     step++;
     switch (direction) {
     case 1: // 向左
-        //moveLeft();
         if(!moveLeft()) return false;
         break;
     case 2: // 向右
-        //moveRight();
         if(!moveRight()) return false;
         break;
     case 3: // 向上
-        //moveUp();
         if(!moveUp()) return false;
         break;
     case 4: // 向下
-        //moveDown();
         if(!moveDown()) return false;
         break;
     }
@@ -287,7 +283,7 @@ bool Game2048::Revise(){
         }
     }
     step--;
-    point=prepoint;
+    point=prepoint-10;
     Revisible=0;
     }
     return true;

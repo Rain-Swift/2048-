@@ -15,17 +15,20 @@ void Game2048::initialize() {
             PreBoard[i][j]=0;
         }
     }
-    addx=0;
+
+    addx=0;//每次移动新加数的位置
     addy=0;
-    addpx=0;
+    addpx=0;//上次移动新加数的位置
     addpy=0;
+
     addRandomTile();
     addRandomTile();
-    point=0;
-    step=0;
-    choice=3;
-    Revisible=0;
-    prepoint=0;
+
+    point=0;//初始化分数为0
+    step=0;//初始化步数为0
+    choice=3;//初始化复活机会为3
+    Revisible=0;//不可撤销
+    prepoint=0;//上一次分数为0
 
 }
 
@@ -36,7 +39,7 @@ bool Game2048::CheckFull(){
         }
     }
     return true;
-}
+}//检查是否已满
 
 bool Game2048::manipulate(int direction) {
     for (int i = 0; i < 4; i++) {
@@ -44,11 +47,15 @@ bool Game2048::manipulate(int direction) {
             PreBoard[i][j]=board[i][j];
         }
     }
-    prepoint=point;
-    Revisible=1;
-    if(!judge()) return true;
+    prepoint=point;//保存上一次的数字表格
+
+    Revisible=1;//状态变更为可撤销
+
+    if(!judge()) return true;//已满则直接返回
+
     point--;
     step++;
+
     switch (direction) {
     case 1: // 向左
         if(!moveLeft()) return false;
@@ -323,4 +330,12 @@ void Game2048::Recover(){
       }
     }
     choice--;
+}
+
+int Game2048::getPoint(){
+    return point;
+}
+
+int Game2048::getStep(){
+    return step;
 }
